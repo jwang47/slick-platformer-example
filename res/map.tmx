@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass" tilewidth="32" tileheight="32">
+  <image source="grass.png" width="96" height="192"/>
+  <tile id="16">
+   <properties>
+    <property name="type" value="grass2"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="base" width="50" height="50">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+1XWw7DIAzjCrv/ZfdbsTzsxF0Hw9KkjpLExknVjvF/eN38Q+p2uY7B5WER1bSukRzz2p1cvTqsb6i3Slj1Kvqs9S4fixMTq5gpbwaiOKaHLU1IL0UcGV9mbd1zQvuo6gmy7umJuHrnoQCjw4qbeWVeeDU7YHyPYrN5yGKyPYr+RX3p5FXOSVXHMO5HOTN0+Kv8qPKL9qFrrB9IX7NaUL2ZhiiXFZdxZHhVdHfnA4nxuFj/2TzzNdMn1+tMxxzL9ux83+PEeNvd74HVUJkfZH+UG0GVI8qto4NFdh6V3mN0jBFrR6Hs/2tsVMuadQWqs8RqRHxVoOMN6lWVgzpX1N/KmVX1HDvjytozj29A/dyJ8h8cHHxipxm563n4JHbScsUOPnnvFStrWgXnvNfG0/7d8f58enE/VL6LVd/R36ihQqZjFRwdv4Wn+/rgGbwBAM6k0BAnAAA=
+  </data>
+ </layer>
+ <objectgroup name="basic" width="50" height="50">
+  <object name="player" type="spawn" x="195" y="1258" width="32" height="27"/>
+ </objectgroup>
+</map>
