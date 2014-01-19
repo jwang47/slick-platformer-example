@@ -21,6 +21,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -33,7 +34,7 @@ import org.newdawn.slick.tiled.TiledMap;
  *    rather than boxes for the platforms: http://en.wikipedia.org/wiki/Marching_squares
  * 3. Separate behavior into various classes
  */
-public class PlatformerGame extends BasicGame implements ContactListener {
+public class PlatformerGame extends BasicGame implements ContactListener, KeyListener {
 
   /**
    * Pixels to meters ratio for Box2D. Useful because Box2D works best with
@@ -51,6 +52,7 @@ public class PlatformerGame extends BasicGame implements ContactListener {
   private Vector2 cameraPosition;
 
   // player stuff
+  public static final float JUMP_FORCE = 23.0f;
   private boolean canJump = true;
   private final float playerRadius = 5;
   private Vector2 playerPosition = new Vector2();
@@ -87,6 +89,8 @@ public class PlatformerGame extends BasicGame implements ContactListener {
 
   @Override
   public void init(GameContainer g) throws SlickException {
+	g.getInput().addListener(this);
+	  
     world = new World(new Vec2(0, 9.81f), true);
     world.setContactListener(this);
 
@@ -131,7 +135,7 @@ public class PlatformerGame extends BasicGame implements ContactListener {
     System.out.println("position" + playerSpawn);
     playerBody = createCircleBody(toPhysicsVector(playerSpawn), playerRadius, BodyType.DYNAMIC);
     // set a string as the user data
-    // usually I set the object representing the body as the user data
+    // usually set the object representing the body as the user data, to use when processing collisions
     playerBody.setUserData("player");
   }
 
@@ -154,11 +158,6 @@ public class PlatformerGame extends BasicGame implements ContactListener {
       playerBody.applyForce(new Vec2(force, 0), new Vec2());
     }
 
-    // jump player
-    if (canJump && (Keyboard.isKeyDown(Input.KEY_UP) || Keyboard.isKeyDown(Input.KEY_W))) {
-      playerBody.applyLinearImpulse(new Vec2(0, -23), new Vec2());
-      canJump = false;
-    }
   }
 
   /**
@@ -218,7 +217,7 @@ public class PlatformerGame extends BasicGame implements ContactListener {
 
   private void processPlayerCollision(Contact contact, Body other) {
     // if we hit something and we weren't moving up, we can jump
-    if (contact.getManifold().localNormal.y < 0) {
+    if (contact.getManifold().localNormal.y < 0 && contact.getManifold().localPoint.x == 0) {
       canJump = true;
     }
   }
@@ -249,6 +248,20 @@ public class PlatformerGame extends BasicGame implements ContactListener {
   @Override
   public void postSolve(Contact contact, ContactImpulse impulse) {
 
+  }
+  
+  @Override
+  public void keyPressed(int key, char c) {
+    // jump player
+    if (canJump && (key == Input.KEY_UP || key == Input.KEY_W)) {
+      playerBody.applyLinearImpulse(new Vec2(0, -JUMP_FORCE), new Vec2());
+      canJump = false;
+    }
+  }
+  
+  @Override
+  public void keyReleased(int key, char c) {
+	  
   }
 
   public static void main(String[] argv) {
